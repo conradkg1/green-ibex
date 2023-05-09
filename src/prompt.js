@@ -17,20 +17,17 @@ class PromptRunner {
         ];
     }
 
-    displayMainMenu() {
-        inquirer
-            .prompt([
-                {
-                    type: "list",
-                    name: "option",
-                    message: "Please Select One of the Following Options:",
-                    choices: this.mainMenuItems
-                }
-            ])
-            .then(answer => this.routeMainMenuOptions(answer.option))
-            .catch(err => console.error(err));
-    }
-
+displayMainMenu() {
+    inquirer
+    .prompt([{
+            type: "list",
+                name: "option",
+                 message: "Please Select One of the Following Options:",
+                choices: this.mainMenuItems
+        }])
+        .then(answer => this.routeMainMenuOptions(answer.option))
+        .catch(err => console.error(err));
+}
     routeMainMenuOptions(choice) {
         const next = choice.toLowerCase().trim();
         switch (next) {
@@ -60,7 +57,6 @@ class PromptRunner {
                 this.displayMainMenu();
         }
     }
-
     viewAll(table) {
         const q = this.queries;
         const qMap = {
@@ -187,7 +183,6 @@ class PromptRunner {
 
     addEmployee(managers, roles) {
         const managersList = managers.map(manager => manager.name);
-        // Some employees have no manager
         managersList.shift('None');
         const rolesList = roles.map(role => role.title);
         inquirer
