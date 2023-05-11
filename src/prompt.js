@@ -2,10 +2,10 @@ const inquirer = require('inquirer');
 const { addEmployee } = require('./query');
 
 class PromptRunner {
-    constructor(queryObject, dbConnection, displayMethod) {
-        this.queries = queryObject;
+    constructor(dbConnection, displayMethod, queryObject) {
         this.db = dbConnection;
         this.display = displayMethod;
+        this.queries = queryObject;
         this.mainMenuItems = [
             "View All Departments",
             "View All Roles",
@@ -16,6 +16,7 @@ class PromptRunner {
             "Update an Employee Role"
         ];
     }
+
 
 displayMainMenu() {
     inquirer
@@ -60,18 +61,22 @@ displayMainMenu() {
     viewAll(table) {
         const q = this.queries;
         const qMap = {
-            'department': q.getDepts,
-            'role': q.getDisplayRoles,
-            'employee': q.getDisplayEmployees,
+          'department': q.getDepts(),
+          'role': q.getDisplayRoles(),
+          'employee': q.getDisplayEmployees(),
         };
-        this.db.query(qMap[table](), (err, result) => {
-            if (err) {
-                console.error(err);
-            } else {
-                this.display(result);
-                this.displayMainMenu();
-            }
+        const display = this.display;
+        const displayMainMenu = this.displayMainMenu.bind(this);
+        this.db.query(qMap[table], (err, result) => {
+          if (err) {
+            console.error(err);
+          } else {
+            display(result);
+            displayMainMenu();
+          }
         });
+      }
+      
     }
 
     addDept() {
