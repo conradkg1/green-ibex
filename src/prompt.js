@@ -61,22 +61,18 @@ displayMainMenu() {
     viewAll(table) {
         const q = this.queries;
         const qMap = {
-          'department': q.getDepts(),
-          'role': q.getDisplayRoles(),
-          'employee': q.getDisplayEmployees(),
+            'department': q.getDepts,
+            'role': q.getDisplayRoles,
+            'employee': q.getDisplayEmployees,
         };
-        const display = this.display;
-        const displayMainMenu = this.displayMainMenu.bind(this);
-        this.db.query(qMap[table], (err, result) => {
-          if (err) {
-            console.error(err);
-          } else {
-            display(result);
-            displayMainMenu();
-          }
+        this.db.query(qMap[table](), (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                this.display(result);
+                this.displayMainMenu();
+            }
         });
-      }
-      
     }
 
     addDept() {
